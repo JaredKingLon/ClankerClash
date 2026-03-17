@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My First JavaScript Project</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body></body>
+
+    <h1 style="color: white;", style = "font-size: 120px;">Clanker Clash</h1>
+   
+<section>
+   <img src="Images/WhiteRobotPixelArt.png", height = 300px, width = 300 px>
+   
+</section>
+   
+<section>
+
+    <div class="box">
+<h2>Login</h2>
+ 
+  <input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+ 
+        <button onclick="login()">Login</button> 
+ 
+
+
+        
+     <button onclick="changeText()">Forgot Password?</button>
+        
+    <div id="msg"></div>
+</div>
+ 
+<script>
+
+  // "File-based" users (simulating a file)
+
+  const users = [
+
+    { username: "jared", password: "bird" },
+
+    { username: "student", password: "abc" },
+ 
+
+  ];
+ 
+  function login() {
+
+    const u = document.getElementById("user").value;
+
+    const p = document.getElementById("pass").value;
+
+    const msg = document.getElementById("msg");
+ 
+    const found = users.find(user =>
+
+      user.username === u && user.password === p
+
+    );
+ 
+    if (found) {
+
+      msg.style.color = "green";
+
+      msg.textContent = "Login successful!";
+
+        
+    } else {
+
+      msg.style.color = "red";
+
+      msg.textContent = "Wrong username or password";
+
+    }
+
+  }
+</script>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
