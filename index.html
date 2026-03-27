@@ -1,159 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Supabase Login</title>
-<style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 420px;
-      margin: 40px auto;
-      padding: 20px;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      box-sizing: border-box;
-    }
-    #message {
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 6px;
-      background: #f3f3f3;
-    }
-</style>
-</head>
-<body>
- 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Supabase Login</title>
-<style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 420px;
-      margin: 40px auto;
-      padding: 20px;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      box-sizing: border-box;
-    }
-    #message {
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 6px;
-      background: #f3f3f3;
-    }
-</style>
-</head>
-<body>
-<h1>Sign up / Log in</h1>
- 
-  <input type="username" id="username" placeholder="Username" />
-<input type="password" id="password" placeholder="Password" />
- 
-  <button id="signupBtn">Sign up</button>
-<button id="loginBtn">Log in</button>
-<button id="logoutBtn">Log out</button>
- 
-  <div id="message">Ready.</div>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-  <script type="module">
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
- 
-    const supabaseUrl = 'https://supabase.com/dashboard/project/jwlbcmapgdiljmgnqoxe'
-    const supabaseAnonKey = 'sb_publishable_HsEO0dQTkP3HJAy80pfMqQ_EZRay4GJ'
- 
-    const supabase = createClient(supabaseUrl, supabaseAnonKey)
- 
-    const usernameInput = document.getElementById('username')
-    const passwordInput = document.getElementById('password')
-    const message = document.getElementById('message')
- 
-    function showMessage(text) {
-      message.textContent = text
-    }
- 
-    document.getElementById('signupBtn').addEventListener('click', async () => {
-      const username = usernameInput.value.trim()
-      const password = passwordInput.value
- 
-      if (!username || !password) {
-        showMessage('Please enter an email and password.')
-        return
-      }
- 
-      const { data, error } = await supabase.auth.signUp({
-        username,
-        password
-      })
- 
-      if (error) {
-        showMessage('Sign up error: ' + error.message)
-        return
-      }
- 
-      if (data.user) {
-        showMessage('Account created. Check your email if confirmation is enabled.')
-      } else {
-        showMessage('Sign up complete.')
-      }
-    })
- 
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-      const username = usernameInput.value.trim()
-      const password = passwordInput.value
- 
-      if (!username || !password) {
-        showMessage('Please enter a username and password.')
-        return
-      }
- 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        username,
-        password
-      })
- 
-      if (error) {
-        showMessage('Login error: ' + error.message)
-        return
-      }
- 
-      showMessage('Logged in as: ' + data.user.username)
-      console.log('Session:', data.session)
-    })
- 
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-      const { error } = await supabase.auth.signOut()
- 
-      if (error) {
-        showMessage('Logout error: ' + error.message)
-        return
-      }
- 
-      showMessage('Logged out.')
-    })
- 
-    const { data: { session } } = await supabase.auth.getSession()
-    if (session) {
-      showMessage('Already logged in as: ' + session.user.username)
-    }
- 
-    supabase.auth.onAuthStateChange((event, session) => {
-      console.log('Auth event:', event, session)
-    })
-</script>
+const supabaseUrl = 'https://YOUR_PROJECT_REF.supabase.co'
+const supabaseAnonKey = 'YOUR_ANON_KEY'
 
-    
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+const usernameInput = document.getElementById('username')
+const passwordInput = document.getElementById('password')
+const message = document.getElementById('message')
+
+function showMessage(text) {
+  message.textContent = text
+}
+
+document.getElementById('signupBtn').addEventListener('click', async () => {
+  const email = usernameInput.value.trim()
+  const password = passwordInput.value
+
+  if (!email || !password) {
+    showMessage('Please enter an email and password.')
+    return
+  }
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password
+  })
+
+  if (error) return showMessage('Sign up error: ' + error.message)
+
+  showMessage('Account created. Check your email.')
+})
+
+document.getElementById('loginBtn').addEventListener('click', async () => {
+  const email = usernameInput.value.trim()
+  const password = passwordInput.value
+
+  if (!email || !password) {
+    showMessage('Please enter an email and password.')
+    return
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  })
+
+  if (error) return showMessage('Login error: ' + error.message)
+
+  showMessage('Logged in as: ' + data.user.email)
+})
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  const { error } = await supabase.auth.signOut()
+  if (error) return showMessage('Logout error: ' + error.message)
+  showMessage('Logged out.')
+})
 </script>
-    
-</body>
-</html>
